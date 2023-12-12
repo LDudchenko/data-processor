@@ -8,13 +8,17 @@ from base.models import DustModel
 
 class DustNestedSerializer(serializers.Serializer):
      PM1=serializers.FloatField()
-     PM2=serializers.FloatField(source="PM25")
+     PM2=serializers.FloatField()
      PM10=serializers.FloatField()
 
 
 class DustSerializer(serializers.Serializer):
      timestamp=serializers.DateTimeField()
      dust=DustNestedSerializer(source='*')
+
+     def create(self, validated_data):
+         return DustModel(timestamp=validated_data.get('timestamp'))
+
 
 class TemperatureSerializer(serializers.ModelSerializer):
     class Meta:
