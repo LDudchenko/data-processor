@@ -1,6 +1,6 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from .serilalizers import DataSerializer
+from .serilalizers import StatsSerializer
 
 @api_view(['GET'])
 def getData(request):
@@ -13,6 +13,8 @@ def getData(request):
 
 @api_view(['POST'])
 def saveData(request):
-    serializer = DataSerializer(data=request.data)
+    serializer = StatsSerializer(data=request.data)
+    if serializer.is_valid():
+        print('Data is valid')
     #save data
     return Response(serializer.data)

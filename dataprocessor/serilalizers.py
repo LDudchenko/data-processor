@@ -1,7 +1,7 @@
 from rest_framework import serializers
-from .models import DataModel
+from base.models import StatsModel
 
-class DataSerializer(serializers.ModelSerializer):
+class StatsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = DataModel
-        fields = ['name']
+        model = StatsModel
+        fields = '__all__'
