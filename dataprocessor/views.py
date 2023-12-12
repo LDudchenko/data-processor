@@ -1,6 +1,9 @@
 from rest_framework.response import Response
+from rest_framework import status
 from rest_framework.decorators import api_view
 from .serilalizers import StatsSerializer
+from .serilalizers import TemperatureSerializer
+from .serilalizers import DustSerializer
 
 @api_view(['GET'])
 def getData(request):
@@ -13,8 +16,13 @@ def getData(request):
 
 @api_view(['POST'])
 def saveData(request):
-    serializer = StatsSerializer(data=request.data)
+    if isinstance(request.data, list):
+        serializer = DustSerializer(data=request.data, many=True)
+    else:
+        serializer = DustSerializer(data=request.data)
     if serializer.is_valid():
         print('Data is valid')
-    #save data
-    return Response(serializer.data)
+        print(serializer.data)
+        print(request.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
