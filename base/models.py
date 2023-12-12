@@ -3,6 +3,7 @@ from django.db import models
 # Create your models here.
 
 class DustModel(models.Model):
+     _id=models.AutoField(primary_key=True)
      timestamp=models.DateTimeField()
      PM1=models.FloatField()
      PM2=models.FloatField()
@@ -15,14 +16,17 @@ class StatsModel(models.Model):
     CO2=models.FloatField()
 
 class TemperatureModel(models.Model):
+    _id=models.AutoField(primary_key=True)
     timestamp=models.DateTimeField()
     temperature=models.FloatField()
 
 class HumidityModel(models.Model):
+    _id=models.AutoField(primary_key=True)
     timestamp=models.DateTimeField()
     humidity=models.FloatField()
 
 class CO2Model(models.Model):
+    _id=models.AutoField(primary_key=True)
     timestamp=models.DateTimeField()
     CO2=models.FloatField()
 

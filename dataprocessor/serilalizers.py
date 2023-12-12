@@ -19,14 +19,20 @@ class DustSerializer(serializers.Serializer):
 class TemperatureSerializer(serializers.ModelSerializer):
     class Meta:
         model = TemperatureModel
-        fields = '__all__'
+        fields = ['timestamp', 'temperature']
 
 class StatsSerializer(serializers.ModelSerializer):
     class Meta:
         model = StatsModel
         fields = '__all__'
 
-class StatsSerializer(serializers.ModelSerializer):
+class CO2Serializer(serializers.ModelSerializer):
     class Meta:
         model = CO2Model
-        fields = '__all__'
+        fields = ['timestamp','CO2']
+
+
+class HumiditySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HumidityModel
+        fields = ['humidity','timestamp']
