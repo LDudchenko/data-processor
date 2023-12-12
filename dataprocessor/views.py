@@ -17,9 +17,9 @@ def getData(request):
 @api_view(['POST'])
 def saveData(request):
     if isinstance(request.data, list):
-        serializer = DustSerializer(data=request.data, many=True)
+        serializer = TemperatureSerializer(data=request.data, many=True)
     else:
-        serializer = DustSerializer(data=request.data)
+        serializer = TemperatureSerializer(data=request.data)
     if serializer.is_valid():
         print('Data is valid')
         print(serializer.data)
