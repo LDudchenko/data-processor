@@ -17,7 +17,8 @@ class DustSerializer(serializers.Serializer):
      dust=DustNestedSerializer(source='*')
 
      def create(self, validated_data):
-         return DustModel(timestamp=validated_data.get('timestamp'))
+         return DustModel(timestamp=validated_data.get('timestamp'), PM1=validated_data.get('PM1'), 
+                          PM2=validated_data.get('PM2'), PM10=validated_data.get('PM10'),)
 
 
 class TemperatureSerializer(serializers.ModelSerializer):
