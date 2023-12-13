@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile  # The name of your Dockerfile
+    ports:
+      - "8000:8000"  # Adjust the port if your app listens on a different port
+    volumes:
+      - .:/app  # Mount the current directory to /app in the container
