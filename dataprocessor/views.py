@@ -64,6 +64,17 @@ def checkData(request, modelSerializer):
 @api_view(['POST'])
 def saveData(request):
     serializer_data = {}
+    parseDatetime(request)
+    checkData(serializer_data, TemperatureSerializer)
+    checkData(serializer_data, HumiditySerializer)
+    checkData(serializer_data, CO2Serializer)
+    serializer_data = parseDust(request, serializer_data)
+    serializer = checkData(serializer_data, DustSerializer)
+
+    return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+def parseDatetime(request):
     if isinstance(request.data, list):
         for json_obj in request.data:
             timestamp_obj = datetime(*map(lambda item: int(item), json_obj['timestamp'].split(', ')))
@@ -72,9 +83,9 @@ def saveData(request):
     else:
         timestamp_obj = datetime(*map(lambda item: int(item), request.data['timestamp'].split(', ')))
         request.data['timestamp'] = timestamp_obj
-    checkData(serializer_data, TemperatureSerializer)
-    checkData(serializer_data, HumiditySerializer)
-    checkData(serializer_data, CO2Serializer)
+
+
+def parseDust(request, serializer_data):
     if isinstance(request.data, list):
         serializer_data = list(map(lambda x: {
             'PM1': x.get('dust', {}).get('PM1', ''),
@@ -89,7 +100,5 @@ def saveData(request):
             'PM10': request.data.get('dust', {}).get('PM10', ''),
             'timestamp': request.data.get('timestamp', ''),
         }
-    serializer = checkData(serializer_data, DustSerializer)
-
-    return Response(serializer.data, status=status.HTTP_201_CREATED)
+    return serializer_data
     
