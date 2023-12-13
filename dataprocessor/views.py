@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view
@@ -61,15 +63,32 @@ def checkData(request, modelSerializer):
 
 @api_view(['POST'])
 def saveData(request):
-    checkData(request.data, TemperatureSerializer)
-    checkData(request.data, HumiditySerializer)
-    checkData(request.data, CO2Serializer)
-    serializer_data = {
-        'PM1': request.data.get('dust', {}).get('PM1', ''),
-        'PM2': request.data.get('dust', {}).get('PM2', ''),
-        'PM10': request.data.get('dust', {}).get('PM10', ''),
-        'timestamp': request.data.get('timestamp', ''),
-    }
+    serializer_data = {}
+    if isinstance(request.data, list):
+        for json_obj in request.data:
+            timestamp_obj = datetime(*map(lambda item: int(item), json_obj['timestamp'].split(', ')))
+            json_obj['timestamp'] = timestamp_obj
+
+    else:
+        timestamp_obj = datetime(*map(lambda item: int(item), request.data['timestamp'].split(', ')))
+        request.data['timestamp'] = timestamp_obj
+    checkData(serializer_data, TemperatureSerializer)
+    checkData(serializer_data, HumiditySerializer)
+    checkData(serializer_data, CO2Serializer)
+    if isinstance(request.data, list):
+        serializer_data = list(map(lambda x: {
+            'PM1': x.get('dust', {}).get('PM1', ''),
+            'PM2': x.get('dust', {}).get('PM2', ''),
+            'PM10': x.get('dust', {}).get('PM10', ''),
+            'timestamp': x.get('timestamp', ''),
+        }, request.data))
+    else:
+        serializer_data = {
+            'PM1': request.data.get('dust', {}).get('PM1', ''),
+            'PM2': request.data.get('dust', {}).get('PM2', ''),
+            'PM10': request.data.get('dust', {}).get('PM10', ''),
+            'timestamp': request.data.get('timestamp', ''),
+        }
     serializer = checkData(serializer_data, DustSerializer)
 
     return Response(serializer.data, status=status.HTTP_201_CREATED)
