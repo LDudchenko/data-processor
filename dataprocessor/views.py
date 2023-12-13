@@ -36,8 +36,7 @@ def getData(request):
 
     if type=='pm1':
         pm1 = DustModel.objects.all().order_by('-timestamp')[:quantity]
-        print(pm1)
-        map = {str(obj.timestamp): obj.dust.PM1 for obj in pm1}
+        map = {str(obj.timestamp): obj.PM1 for obj in pm1}
     if type=='pm2':
         pm2 = DustModel.objects.all().order_by('-timestamp')[:quantity]
         map = {str(obj.timestamp): obj.PM2 for obj in pm2}
