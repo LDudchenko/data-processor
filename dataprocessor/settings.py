@@ -74,12 +74,15 @@ WSGI_APPLICATION = 'dataprocessor.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+        'default': {
+            'ENGINE': 'djongo',
+            'NAME': 'iot_project',
+            'ENFORCE_SCHEMA': False,
+            'CLIENT': {
+                'host': 'mongodb+srv://m001-student:m001-mongodb-basics@sandbox.jc8etvx.mongodb.net/iot_project?retryWrites=true&w=majority'
+            }
+        }
 }
 
 
