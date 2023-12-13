@@ -81,9 +81,10 @@ DATABASES = {
             'ENFORCE_SCHEMA': False,
             'CLIENT': {
                 'host': 'mongodb+srv://m001-student:m001-mongodb-basics@sandbox.jc8etvx.mongodb.net/iot_project?retryWrites=true&w=majority'
-            }  
+            }
         }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators

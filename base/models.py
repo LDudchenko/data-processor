@@ -2,12 +2,19 @@ from django.db import models
 
 # Create your models here.
 
+class DustFields(models.Model):
+    PM1 = models.FloatField()
+    PM2 = models.FloatField()
+    PM10 = models.FloatField()
+
+
 class DustModel(models.Model):
      _id=models.AutoField(primary_key=True)
      timestamp=models.DateTimeField()
-     PM1=models.FloatField()
-     PM2=models.FloatField()
-     PM10=models.FloatField()
+     PM1 = models.FloatField()
+     PM2 = models.FloatField()
+     PM10 = models.FloatField()
+
 
 class StatsModel(models.Model):
     timestamp=models.DateTimeField()
