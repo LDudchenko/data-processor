@@ -31,7 +31,7 @@ def getData(request):
         co2 = CO2Model.objects.all()
         map = {str(obj.timestamp): obj.CO2 for obj in co2}
 
-    if param_value=='dust':
+    if param_value=='pm1':
         pm1 = DustModel.objects.all()
         print(pm1)
         map = {str(obj.timestamp): obj.dust.PM1 for obj in pm1}
@@ -46,10 +46,10 @@ def getData(request):
 
 
 def checkData(request, modelSerializer):
-    if isinstance(request.data, list):
-        serializer = modelSerializer(data=request.data, many=True)
+    if isinstance(request, list):
+        serializer = modelSerializer(data=request, many=True)
     else:
-        serializer = modelSerializer(data=request.data)
+        serializer = modelSerializer(data=request)
     if serializer.is_valid():
         serializer.save()
         print('Data is valid')
@@ -61,10 +61,16 @@ def checkData(request, modelSerializer):
 
 @api_view(['POST'])
 def saveData(request):
-    checkData(request, TemperatureSerializer)
-    checkData(request, HumiditySerializer)
-    checkData(request, CO2Serializer)
-    serializer = checkData(request, DustSerializer)
+    checkData(request.data, TemperatureSerializer)
+    checkData(request.data, HumiditySerializer)
+    checkData(request.data, CO2Serializer)
+    serializer_data = {
+        'PM1': request.data.get('dust', {}).get('PM1', ''),
+        'PM2': request.data.get('dust', {}).get('PM2', ''),
+        'PM10': request.data.get('dust', {}).get('PM10', ''),
+        'timestamp': request.data.get('timestamp', ''),
+    }
+    serializer = checkData(serializer_data, DustSerializer)
 
     return Response(serializer.data, status=status.HTTP_201_CREATED)
     
