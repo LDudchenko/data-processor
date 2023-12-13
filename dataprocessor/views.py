@@ -18,30 +18,31 @@ from base.models import HumidityModel
 @api_view(['GET'])
 def getData(request):
     # Get type of stats
-    param_value = request.GET.get('type')
+    type = request.GET.get('type')
+    quantity = int(request.GET.get('quantity', 20))
     map = {}
 
-    if param_value=='Temperature':
-        temperaturs = TemperatureModel.objects.all()
+    if type=='Temperature':
+        temperaturs = TemperatureModel.objects.all().order_by('-timestamp')[:quantity]
         map = {str(obj.timestamp): obj.temperature for obj in temperaturs}
     
-    if param_value=='Humidity':
-        humidities = HumidityModel.objects.all()
+    if type=='Humidity':
+        humidities = HumidityModel.objects.all().order_by('-timestamp')[:quantity]
         map = {str(obj.timestamp): obj.humidity for obj in humidities}
 
-    if param_value=='CO2':
-        co2 = CO2Model.objects.all()
+    if type=='CO2':
+        co2 = CO2Model.objects.all().order_by('-timestamp')[:quantity]
         map = {str(obj.timestamp): obj.CO2 for obj in co2}
 
-    if param_value=='pm1':
-        pm1 = DustModel.objects.all()
+    if type=='pm1':
+        pm1 = DustModel.objects.all().order_by('-timestamp')[:quantity]
         print(pm1)
         map = {str(obj.timestamp): obj.dust.PM1 for obj in pm1}
-    if param_value=='pm2':
-        pm2 = DustModel.objects.all()
+    if type=='pm2':
+        pm2 = DustModel.objects.all().order_by('-timestamp')[:quantity]
         map = {str(obj.timestamp): obj.PM2 for obj in pm2}
-    if param_value=='pm10':
-        pm10 = DustModel.objects.all()
+    if type=='pm10':
+        pm10 = DustModel.objects.all().order_by('-timestamp')[:quantity]
         map = {str(obj.timestamp): obj.PM10 for obj in pm10}
 
     return Response(map)
