@@ -65,11 +65,11 @@ def checkData(request, modelSerializer):
 def saveData(request):
     serializer_data = {}
     parseDatetime(request)
-    checkData(serializer_data, TemperatureSerializer)
-    checkData(serializer_data, HumiditySerializer)
-    checkData(serializer_data, CO2Serializer)
+    checkData(request.data, TemperatureSerializer)
+    checkData(request.data, HumiditySerializer)
     serializer_data = parseDust(request, serializer_data)
-    serializer = checkData(serializer_data, DustSerializer)
+    checkData(serializer_data, DustSerializer)
+    serializer = checkData(request.data, CO2Serializer)
 
     return Response(serializer.data, status=status.HTTP_201_CREATED)
 

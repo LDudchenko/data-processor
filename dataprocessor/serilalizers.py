@@ -34,7 +34,7 @@ class StatsSerializer(serializers.ModelSerializer):
 class CO2Serializer(serializers.ModelSerializer):
     class Meta:
         model = CO2Model
-        fields = ['timestamp', 'CO2']
+        fields = ['CO2', 'timestamp']
 
 
 class HumiditySerializer(serializers.ModelSerializer):
